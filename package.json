@@ -1,0 +1,33 @@
+{
+  "name": "whale-analysis",
+  "version": "1.0.0",
+  "description": "Gather data on cryptocurrency whales and enable triggers based on their behavior.",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.476.0",
+    "axios": "^0.19.0",
+    "source-map-support": "^0.5.10"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.17",
+    "@types/node": "^10.12.18",
+    "serverless-offline": "^5.3.3",
+    "serverless-webpack": "^5.2.0",
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.2.4",
+    "webpack": "^4.29.0"
+  },
+  "author": "R. Stephen Guerra",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com:rguerra712/whale-analysis"
+  },
+  "bugs": {
+    "url": "https://github.com:rguerra712/whale-analysis/issues"
+  },
+  "homepage": "https://github.com:rguerra712/whale-analysis#readme"
+}
