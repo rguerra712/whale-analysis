@@ -12,7 +12,16 @@ provider:
   stage: ${opt:stage, 'dev'}
   environment:
     WHALE_ALERT_IO_API_KEY: ${ssm:WHALE_ALERT_IO_API_KEY}
-
+    CACHE_DYNAMODB_TABLE: ${self:service}-${self:provider.stage}-cache
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.CACHE_DYNAMODB_TABLE}"
+ 
 functions:
   index:
     handler: src/handlers/index-handler.get
@@ -20,3 +29,21 @@ functions:
       - http:
           method: get
           path: /
+  cache:
+    handler: src/handlers/cache-scheduler-handler.cache
+    events:
+      - schedule: rate(1 minute)
+
+resources:
+  Resources:
+    CacheWhaleAnalysisTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: transactionId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: transactionId
+            KeyType: HASH
+        TableName: ${self:provider.environment.CACHE_DYNAMODB_TABLE}
+        BillingMode: PAY_PER_REQUEST # on demand since unknown how many whales will be at once
